@@ -19,11 +19,14 @@ def date_clean(x='None'):
         x = datetime.strptime(default, str)
     else:
         if len(x) > 18:
-            date = x[:10] + " " + x[11:19]
-            try:
-                x = datetime.strptime(date, str)
-            except ValueError:
+            if int(x[:4]) < 2000:
                 x = datetime.strptime(default, str)
+            else:
+                date = x[:10] + " " + x[11:19]
+                try:
+                    x = datetime.strptime(date, str)
+                except ValueError:
+                    x = datetime.strptime(default, str)
         else:
             x = datetime.strptime(default, str)
     return x
