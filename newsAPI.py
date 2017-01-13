@@ -1,6 +1,6 @@
 # encoding: latin-1
 from python_parse_config import read_db_config, read_news_config, read_url_config
-from news_api_helpers import id_fetch, sanitize
+from news_api_helpers import id_fetch, sanitize, date_clean
 import requests
 import MySQLdb
 
@@ -29,7 +29,7 @@ dbSrc = cur.fetchall()
 if srcLen > len(dbSrc):
     for src in range(0, srcLen):
         if srcList[src]['id'] not in dbSrc:
-            sourceVars = {'source': data['sources'][src]['id'],
+            sourceVars = {'source': sanitize(data['sources'][src]['id']),
                           "description": sanitize(data['sources'][src]['description'])}
             sqlInsert = """INSERT INTO sources (source_name, source_description) VALUES
             ('%(source)s', '%(description)s');""" % sourceVars
@@ -59,7 +59,7 @@ for src in range(0, srcLen):
                     sqlInsert = "INSERT INTO author_list (author_name) VALUES ('%(auth)s');" % {'auth': author}
                     cur.execute(sqlInsert)
                     db.commit()
-                    print(author)
+                    # print(author)
                     cur.execute("SELECT LAST_INSERT_ID()")
                     authID = id_fetch(cur)
 
@@ -77,6 +77,9 @@ for src in range(0, srcLen):
                     articleVars[v] = 'NULL'
                 if type(articleVars[v]) != long:
                     articleVars[v] = sanitize(articleVars[v])
+                if v is 'pub':
+                    articleVars[v] = date_clean(articleVars[v])
+
             # Put each article into article table of DB
 
             sqlInsert = """INSERT INTO articles (source_id, publishedAt, title, description, url, urlToImage) VALUES
