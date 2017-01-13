@@ -1,3 +1,4 @@
+# encoding: latin-1
 from python_parse_config import read_db_config, read_news_config, read_url_config
 from news_api_helpers import id_fetch, sanitize
 import requests
@@ -80,10 +81,9 @@ for src in range(0, srcLen):
 
             sqlInsert = """INSERT INTO articles (source_id, publishedAt, title, description, url, urlToImage) VALUES
                         ('%(src)s', '%(pub)s', '%(title)s', '%(desc)s', '%(url)s', '%(urlImg)s');""" % articleVars
-            # print(sqlInsert)
             cur.execute(sqlInsert)
             db.commit()
-            #
+
             # Get article_id from new article
             cur.execute("SELECT LAST_INSERT_ID()")
             artID = id_fetch(cur)

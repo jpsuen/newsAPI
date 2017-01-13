@@ -5,5 +5,5 @@ def id_fetch(cur):
 
 
 def sanitize(x):
-    x.replace("'", r"\'").encode('ascii', 'ignore')
+    x = x.replace("'", r"\'").encode('latin-1', 'ignore')
     return x
