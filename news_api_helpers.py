@@ -15,7 +15,7 @@ def sanitize(x):
 def date_clean(x='None'):
     str = '%Y-%m-%d %H:%M:%S'
     default = '2001-01-01 01:01:01'
-    if x is 'None' or x is 'NULL' or x is None or (int(x[:4]) < 2000):
+    if x is 'None' or x is 'NULL' or x is None:
         x = datetime.strptime(default, str)
     else:
         if len(x) > 18:
