@@ -2,7 +2,7 @@ import os
 
 
 def read_db_config(database='server'):
-    hostname = 'jpsrdsnewsapi.curoecstjrny.us-east-1.rds.amazonaws.com'
+    hostname = os.environ['newsAPIHost']
     dbuser = 'newsapi'
     dbname = 'newsAPI'
     dbpw = os.environ['newsAPIpw']
